@@ -4,7 +4,8 @@ Live URL: https://django-rest-api-project.onrender.com
 📦 Overview
 This is a Django REST API project. 
 
-Built with Django REST Framework and deployed on Render, the API supports CRUD operations, nested relationships, and interactive documentation.
+Built with Django REST Framework and deployed on Render, the API supports CRUD operations, nested relationships, 
+and interactive documentation.
 
 🧠 Features
 🔗 RESTful endpoints for Projects and Vacancies
@@ -48,6 +49,7 @@ GET /vacancies/{id}/ – Retrieve a vacancy
 PUT /vacancies/{id}/ – Update a vacancy
 
 DELETE /vacancies/{id}/ – Delete a vacancy
+
 Since the DRF HTML browser sends the "Delete" action via a plain form submission, without JavaScript it doesn't issue a proper DELETE request.
 
 To delete a vacancy or project, you can use Postman or curl.
@@ -56,7 +58,18 @@ Example using curl in Git Bash:
 
 bash
 $ curl -X DELETE https://django-rest-api-project.onrender.com/projects/1/vacancies/2/
-
+UPDATE or PUT request:
+bash
+$ curl -X PUT https://django-rest-api-project.onrender.com/projects/3/ \
+     -H "Content-Type: application/json" \
+     -d '{
+           "id": 3,
+           "name": "Update Name",
+           "field": "Update / New",
+           "experience": "Update",
+           "description": " Update",
+           "deadline": "2026-12-31T23:00:00Z"
+         }'
 
 Nested
 GET /projects/{project_id}/vacancies/ – List vacancies for a project
