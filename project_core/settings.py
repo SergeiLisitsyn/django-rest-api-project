@@ -33,13 +33,16 @@ ALLOWED_HOSTS = [
     '127.0.0.1'
 ]
 
+LOGIN_URL = None
 
+LOGOUT_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/docs/'
 
 # Application definition
 
 INSTALLED_APPS = [
     'django.contrib.admin',
-    'django.contrib.auth',
+    #'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
