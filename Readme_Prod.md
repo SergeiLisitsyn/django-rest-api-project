@@ -17,6 +17,6 @@ DATABASES = {
 Это позволит Django автоматически взять строку подключения из переменной DATABASE_URL.
 6. Создаем runtime.txt и Procfile.
 
-7. 
+
 
 
