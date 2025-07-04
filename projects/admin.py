@@ -3,8 +3,8 @@ from .models import Project, Vacancy
 
 
 @admin.register(Project)
-class PostAdmin(admin.ModelAdmin):
-    list_display = ('name','experience', 'field ', 'description','deadline',)
+class ProjectAdmin(admin.ModelAdmin):
+    list_display = ('name','experience', 'field', 'description','deadline',)
     search_fields = ('name',)
     list_filter = ('name', 'field')
     actions = ['mark_deleted']
