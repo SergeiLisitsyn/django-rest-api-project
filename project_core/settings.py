@@ -33,10 +33,10 @@ ALLOWED_HOSTS = [
     '127.0.0.1'
 ]
 
-LOGIN_URL = None
+#LOGIN_URL = None
 
-LOGOUT_REDIRECT_URL = '/'
-LOGIN_REDIRECT_URL = '/docs/'
+#LOGOUT_REDIRECT_URL = '/'
+#LOGIN_REDIRECT_URL = '/docs/'
 
 # Application definition
 
