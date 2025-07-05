@@ -1,117 +1,115 @@
-🚀 SmartCareer & CloudTask API
-Live URL: https://django-rest-api-project.onrender.com 
+**Live address:** [https://django-rest-api-project.onrender.com](https://django-rest-api-project.onrender.com)  
+**Documentation:** [Swagger UI](https://django-rest-api-project.onrender.com/docs/) | 
+                   [Redoc](https://django-rest-api-project.onrender.com/redoc/)
+**Github repo:** [github](https://github.com/SergeiLisitsyn/django-rest-api-project) 
+---
 
-📦 Overview
-This is a Django REST API project. 
 
-Built with Django REST Framework and deployed on Render, the API supports CRUD operations, nested relationships, 
-and interactive documentation.
+## 🚀 Project Overview
 
-🧠 Features
-🔗 RESTful endpoints for Projects and Vacancies
-"projects": "https://django-rest-api-project.onrender.com/projects/",  returns the complete list of projects available in the system.
+This is a **Django REST Framework**–powered API designed to manage IT projects and their associated vacancies.
+It supports full CRUD operations, nested relationships, and interactive documentation via Swagger and Redoc. 
+The backend is deployed on **Render.com**, using an internal PostgreSQL service for data persistence.
 
-"vacancies": "https://django-rest-api-project.onrender.com/vacancies/" returns no data because each vacancy is linked to a specific project.
+---
 
-Vacancy retrieval is performed through the project’s ID. Use the endpoint projects/{id}/vacancies/ to return all vacancies associated with the given project.
+## 📦 Core Features
 
-🐘 PostgreSQL database integration. 
-Connected to an internal PostgreSQL service provided by Render.com. ✅
+- **Projects Module**  
+  Each project includes metadata such as name, field, experience level, description, and deadline.
 
-🚀 Deployed on Render with CI/CD
+  - Validation for all fields except deadline is handled by the default Django REST Framework mechanisms.
+  A custom validation has been implemented specifically for the deadline field:
+    The deadline cannot be earlier than 24 hours after the project’s creation time.
 
-📁 Project Structure
-src/
-├── projects/           # Project & Vacancy models, views, serializers
-├── project_core/       # Main settings and URL routing
-├── templates/          # Swagger/Redoc templates
-├── staticfiles/        # Collected static assets
-├── manage.py
-🔌 API Endpoints
-Projects
-GET /projects/ – List all projects
+- **Vacancies Module**  
+  Vacancies are linked to specific projects via foreign key relationships. Each vacancy contains a description 
+- and inherits its project context.
 
-POST /projects/ – Create a new project
+- **Nested Endpoints**  
+  Vacancies are accessed through their parent project, ensuring logical data grouping and clean URL structure.
 
-GET /projects/{id}/ – Retrieve a project
+- **Interactive API Docs**  
+  Swagger UI (`/docs/`) and Redoc (`/redoc/`) provide live documentation and testing interfaces.
 
-PUT /projects/{id}/ – Update a project
+- **Admin Panel**  
+  Django Admin is enabled for managing projects and vacancies via a web interface.
+  To login https://django-rest-api-project.onrender.com/admin/  use - user: alex, password: alexpass
+---
 
-DELETE /projects/{id}/ – Delete a project
+## 🔌 API Endpoints
 
-Vacancies
-GET /projects/{id}/vacancies/ – List all vacancies for project with id = {id}
+### Projects
 
-POST /projects/{id}/vacancies/ – Create a vacancy for project with id = {id}
+| Method | Endpoint                     | Description                      |
+|--------|------------------------------|----------------------------------|
+| GET    | `/projects/`                 | List all projects                |
+| POST   | `/projects/`                 | Create a new project             |
+| GET    | `/projects/{id}/`            | Retrieve a specific project      |
+| PUT    | `/projects/{id}/`            | Update a project                 |
+| DELETE | `/projects/{id}/`            | Delete a project                 |
 
-GET /vacancies/{id}/ – Retrieve a vacancy
+### Vacancies (Nested under Projects)
 
-PUT /vacancies/{id}/ – Update a vacancy
+| Method | Endpoint                                 | Description                       |
+|--------|------------------------------------------|-----------------------------------|
+| GET    | `/projects/{id}/vacancies/`              | List vacancies for a project      |
+| POST   | `/projects/{id}/vacancies/`              | Create a vacancy under a project  |
+| GET    | `/projects/{id}/vacancies/{vacancy_id}/` | Retrieve a specific vacancy    or |
+| GET    | ` /vacancies/{vacancy_id}/`              | Retrieve a specific vacancy       |
+| PUT    | `/projects/{id}/vacancies/{vacancy_id}/` | Update a vacancy               or |
+| PUT    | ` /vacancies/{vacancy_id}/`              | Update a vacancy                  |
+| DELETE | `/projects/{id}/vacancies/{vacancy_id}/` | Delete a vacancy              or  |
+| DELETE | ` /vacancies/{vacancy_id}/`              | Delete a vacancy                  |
 
-DELETE /vacancies/{id}/ – Delete a vacancy
+> Note: The endpoint `/vacancies/` returns no data because vacancies are scoped to their parent project.
 
-Since the DRF HTML browser sends the "Delete" action via a plain form submission, without JavaScript it doesn't issue a proper DELETE request.
+---
 
-To delete a vacancy or project, you can use Postman or curl.
+## 🛠 Technologies Used
 
-Example using curl in Git Bash:
+| Layer        | Stack                                    |
+|--------------|------------------------------------------|
+| Backend      | Django 5.2.3, Django REST Framework      |
+| Database     | PostgreSQL (via Render internal service) |
+| Deployment   | Render.com                               |
+| Docs         | drf-yasg (Swagger, Redoc)                |
+| Static Files | WhiteNoise                               |
 
-bash
-$ curl -X DELETE https://django-rest-api-project.onrender.com/projects/1/vacancies/2/
-UPDATE or PUT request:
-bash
-$ curl -X PUT https://django-rest-api-project.onrender.com/projects/3/ \
-     -H "Content-Type: application/json" \
-     -d '{
+---
+
+## ⚙️ Configuration Highlights
+
+- `drf_yasg` is used for schema generation and UI rendering.
+- Static files are served via WhiteNoise.
+- `collectstatic` is run during deployment to gather Swagger assets.
+- Permissions are set to `AllowAny` for public API access.
+- Admin interface is customized with `list_display`, `search_fields`, and `list_filter`.
+
+---
+
+## 🧪 Testing & Interaction
+
+- Use Swagger UI at [`/docs/`](https://django-rest-api-project.onrender.com/docs/) to test endpoints.
+- Use `curl` or Postman for direct API interaction:
+- examples:
+```bash
+DELETE
+curl -X DELETE https://django-rest-api-project.onrender.com/projects/1/vacancies/2/
+PUT
+curl -X PUT https://django-rest-api-project.onrender.com/projects/3/      -H "Content-Type: application/json"      -d '{
            "id": 3,
-           "name": "Update Name",
-           "field": "Update / New",
-           "experience": "Update",
-           "description": " Update",
+           "name": "Update",
+           "field": "Edit / Update",
+           "experience": "Edit",
+           "description": "Update",
            "deadline": "2026-12-31T23:00:00Z"
          }'
+```
 
-Nested
-GET /projects/{project_id}/vacancies/ – List vacancies for a project
+---
 
-GET /projects/{project_id}/vacancies/{id}/ – Retrieve specific vacancy under a project
+## 🧠 Example Use Case
 
-⚙️ Tech Stack
-Layer	Technology
-Backend	Django, Django REST Framework
-Database	PostgreSQL
-Deployment	Render
-Docs	drf-yasg (Swagger, Redoc)
-🚀 Deployment Notes
-Hosted on Render using GitHub integration
-
-PostgreSQL database provisioned via Render dashboard
-
-Static files served via WhiteNoise
-
-Build script includes:
-
-bash
-pip install -r requirements.txt
-python manage.py collectstatic --noinput
-python manage.py migrate
-🧪 Local Setup
-bash
-git clone https://github.com/SergeiLisitsyn/django-rest-api-project.git
-cd django-rest-api-project
-python -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
-python manage.py migrate
-python manage.py runserver
-👤 Admin Access
-To create a superuser:
-
-bash
-python manage.py createsuperuser
-Then visit: https://django-rest-api-project.onrender.com/admin/
-
-📄 License
-This project is licensed under the MIT License.
-
-
+This API could power a job board or internal project tracker where each IT project has its own set of open roles. 
+It’s ideal for integrating with frontend frameworks or mobile apps.
